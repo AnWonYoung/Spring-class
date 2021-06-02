@@ -5,5 +5,6 @@
 </head>
 <body>
     <h1>로그인</h1>
+    <a href="/user/join">회원가입</a>
 </body>
 </html>

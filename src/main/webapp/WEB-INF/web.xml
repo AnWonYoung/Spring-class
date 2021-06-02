@@ -12,7 +12,8 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-    
+<!--  Controller의 주소 값이 dispatcherServlet으로 전달되어 반응함
+      spring의 dispatcherServlet이 자동으로 forward시킴  -->
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

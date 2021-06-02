@@ -2,9 +2,16 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-<!--db값 세팅, 빈 등록하기-->
-    <context:property-placeholder location="classpath:application.properties"/>
+       xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.2.xsd
+        http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd">
+
+    <context:property-placeholder location="classpath:application.properties" />
+
+    <!--db값 세팅, 빈 등록하기-->
     <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
         <property name="driverClassName" value="${db.driver}"/>
         <property name="jdbcUrl" value="${db.host}"/>
@@ -15,9 +22,12 @@
     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <constructor-arg ref="hikariConfig"/>
     </bean>
-<!--  빈 등록  -->
+<!--  빈 등록 (오류 발생으로 mapperLocations 추가(파일 이동), resources안에 mapper 폴더 생성-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="typeAliasesPackage" value="com.koreait.spring"/>
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
     </bean>
+<!-- mybatis 사용시 아래를 꼭 설정 -->
+    <mybatis-spring:scan base-package="com.koreait.spring"/>
 </beans>
