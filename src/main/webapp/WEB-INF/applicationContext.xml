@@ -11,7 +11,7 @@
 
     <context:property-placeholder location="classpath:application.properties" />
 
-    <!--db값 세팅, 빈 등록하기-->
+    <!-- db값 세팅, 빈 등록하기 (오류 해결) -->
     <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
         <property name="driverClassName" value="${db.driver}"/>
         <property name="jdbcUrl" value="${db.host}"/>
