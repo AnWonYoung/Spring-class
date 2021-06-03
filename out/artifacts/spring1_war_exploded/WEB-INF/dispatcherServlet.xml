@@ -17,6 +17,12 @@
     <!-- bean등록할 클래스를 스캔뜨는 시작 패키지를 설정하는 것
          아래의 패키지 명으로 모두 들어오게 됨 -->
     <context:component-scan base-package="com.koreait.spring"/>
+
+    <!--  res안에 css, js를 받아오려면 res폴더 주소값을 따로 설정해주기 (아니면 디폴트인 controller주소값만 받음) -->
+    <!--  모든 요청은 여기 dispatcher에서 먼저 잡기 때문 -->
+    <!--  코드 뜻 : mapping 주소를 부른다면 location으로 연결  -->
+    <mvc:resources mapping="/res/**" location="/res/"/>
+
     <!-- jsp 파일을 사용할 때 반드시 필요한 것-->
     <!-- 사용할 파일명을 완성시켜주는 객체 (Controller의 주소값이 넘어와서 아래 value값을 붙이고 넘김 -->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">

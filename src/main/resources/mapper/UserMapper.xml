@@ -11,4 +11,9 @@
         VALUES
         (#{uid}, #{upw}, #{unm}, #{gender})
     </insert>
+                        <!-- 자동으로 타입 변환됨 -->
+    <select id="selUser" resultType="UserEntity">
+        SELECT * FROM t_user
+        WHERE uid = #{uid}
+    </select>
 </mapper>
