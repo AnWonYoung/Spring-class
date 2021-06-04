@@ -4,8 +4,20 @@
 <mapper namespace="com.koreait.spring.board.BoardMapper">
 <!--  select는 꼭 resultType 명시  -->
     <select id="selBoardList" resultType="BoardDomain">
-        SELECT A.iboard, A.title, A.iuser, A.regdt, B.unm AS writerNm, B.profileImg
-        FROM t_board A INNER JOIN t_user B ON A.iuser = B.iuser
-        ORDER BY A.iboard DESC;
+        SELECT A.iboard, A.title, A.iuser, A.regdt
+        , B.unm AS writerNm, B.profileImg
+        FROM t_board A
+        INNER JOIN t_user B
+        ON A.iuser = B.iuser
+        ORDER BY A.iboard DESC
+    </select>
+
+    <select id="selBoard" resultType="BoardDomain">
+        SELECT B.unm as writerNm, A.iboard, A.iuser,
+               A.regdt, A.title, A.ctnt, B.profileImg
+		FROM t_board A
+		INNER JOIN t_user B
+		ON A.iuser = B.iuser
+		WHERE A.iboard = #{iboard}
     </select>
 </mapper>
