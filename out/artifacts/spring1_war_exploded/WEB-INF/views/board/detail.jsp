@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <title>${requestScope.data.title}</title>
     <link rel="stylesheet" href="/res/css/boardDetail.css">
-    <script src="/res/js/boarddetail.js"></script>
 </head>
 <body>
     <h1>디테일</h1>
@@ -17,13 +16,14 @@
 
     <c:if test="${not empty sessionScope.loginUser}">
     <div>
-        <form id="cmtfrm" onsubmit="return false;">
-            <input type="text" id="cmt" placeholder="댓글">
+        <form id="cmtFrm" method="post" onsubmit="return false;">
+            <input type="text" id="cmt" placeholder="댓글" value="">
             <input type="button" value="댓글달기" onclick="regCmt();">
         </form>
     </div>
     </c:if>
 <%--  data-키값${value값}  --%>
-    <div id="cmtList" data-logint_user_pk="${sessionScope.loginUser.iuser}" data-iboard="${param.iboard}"></div>
+    <div id="cmtList" data-login-user-pk="${sessionScope.loginUser.iuser}" data-iboard="${param.iboard}"></div>
 </body>
 </html>
+<script src="/res/js/boarddetail.js"></script>

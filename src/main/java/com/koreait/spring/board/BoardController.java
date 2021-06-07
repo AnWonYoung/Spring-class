@@ -35,14 +35,25 @@ public class BoardController {
 
 //  Json 형태로 문자열을 만드는 map
 //  map은 forEach문 돌릴 수 없음
+//  Json 형태로 js에서 담아서 날리면 RequestBody를 기입
     @ResponseBody // 필수
-    @RequestMapping(value = "/cmtInsSel", method = RequestMethod.POST)
+    @RequestMapping(value = "/cmtIns", method = RequestMethod.POST)
         public Map<String, Integer> cmtInsSel(@RequestBody BoardCmtEntity param) {
-            System.out.println("param" + param);
-            Map<String, Integer> data = new HashMap();
-            data.put("result", 1);
+            System.out.println("param : " + param);
 
+            int result = service.insBoardCmt(param);
+
+            Map<String, Integer> data = new HashMap();
+            data.put("result", result);
             return data;
+        }
+//      쿼리스트링으로 넘어와서 @RequestBody는 적지 않음
+        @ResponseBody
+        @RequestMapping(value = "/cmtSel")
+        public List<BoardCmtDomain> cmtSel(BoardCmtEntity param) {
+//          iboard값 넘어오는지 체크
+            System.out.println("param : " + param);
+            return service.selBoardCmt(param);
         }
     }
 

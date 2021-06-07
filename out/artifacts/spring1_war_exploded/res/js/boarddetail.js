@@ -20,34 +20,40 @@ function regCmt() {
 function regAjax(param) {
 	const init = {
 		method: 'POST',
-		body: new URLSearchParams(param)
-	};
-	
-	fetch('cmtInsSel', init)
-	.then(function(res) {
-		return res.json();
-	}) // 데이터 형식으로 바꿔줌(Servlet에서 append로만 된 값)
-	.then(function(myJson) {
-		
-		console.log(myJson);
-		
-		switch(myJson.result) {
-			case 0:
-				alert('등록 실패!');
-			break;
-			case 1:
-				cmtFrmElem.cmt.value = '';
-//				alert('등록 성공!');
-				getListAjax();
-			break;
+		body: JSON.stringify(param),
+		// json 형태로 날릴 땐 아래 헤더가 필요함
+		// new URLSearchParams 형식도 가능, get paramerter 값으로 날아감
+		// 대신, @RequestBody는 없어야 함
+		headers:{
+			'accept' : 'application/json',
+			'content-type' : 'application/json;charset=UTF-8'
 		}
-	})
+	};
+
+	fetch('cmtIns', init)
+		.then(function(res) {
+			return res.json();
+		})
+		.then(function(myJson) {
+			console.log(myJson);
+
+			switch(myJson.result) {
+				case 0: //등록 실패
+					alert('등록 실패!');
+					break;
+				case 1: //등록 성공
+					cmtFrmElem.cmt.value = '';
+					getListAjax();
+					break;
+			}
+		});
 }
 // 서버에게 댓글 리스트를 달라고 요청하는 함수
+// 쿼리스트링으로 json을 날리고 있음 = @RequestBody 필요 X
 function getListAjax() {
 	var iboard = cmtListElem.dataset.iboard;
 	
-	fetch('cmtInsSel?iboard=' + iboard)
+	fetch('cmtSel?iboard=' + iboard)
 	.then(function(res) {
 		return res.json();
 	})
@@ -63,6 +69,12 @@ function getListAjax() {
 function makeCmtElemList(data) {
 	
 //	case 1: 에서 getListAjax();를 호출하며 생기는 중복 테이블을 없애기
+
+//	innerHTML = 태그를 감싸고 찍는 것(js가 실행되지 않아서 보안에 우수함)
+//	innerText = 태그까지 모두 찍는 것
+//	append = 뒤로 찍혀감 prepend = 앞으로 찍혀감
+//	appendChild = '값'과 같이 문자열로 찍히지 않고 객체로만 찍힘
+//	ex) var div = document.createElement('값');
 	cmtListElem.innerHTML = '';
 	var tableElem = document.createElement('table');
 	var trElemTitle = document.createElement('tr');
@@ -85,7 +97,7 @@ function makeCmtElemList(data) {
 	cmtListElem.append(tableElem);
 	
 //	세션에 박힌 로그인 값을 가져와서 삭제 및 수정 구현, dataset으로 사용할 때는 대문자 불가능
-	var loginUserPk = cmtListElem.dataset.login_user_pk;
+	var loginUserPk = cmtListElem.dataset.loginUserPk;
 	
 // data는 makeCmtElemList(data)의 data값, 반복문은 함수라는 인자값을 가지며 item을 계속해서 넣어준다는 의미	
 	data.forEach(function(item) {
@@ -186,4 +198,4 @@ function modAjax() {
 	}) 
 		
 }
-// getListAjax(); // 해당 파일이 import되자마자 함수를 1회 호출하는 것
+getListAjax(); // 해당 파일이 import되자마자 함수를 1회 호출하는 것
