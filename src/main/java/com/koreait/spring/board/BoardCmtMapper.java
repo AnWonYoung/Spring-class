@@ -9,4 +9,6 @@ public interface BoardCmtMapper {
     int insBoardCmt(BoardCmtEntity param);
 //  Controller에서 미리 BoardCmtEntity값을 받겠다고 설정함
     List<BoardCmtDomain> selBoardCmt (BoardCmtEntity param);
+    int delBoardCmt (BoardCmtEntity param);
+    int updBoardCmt (BoardCmtEntity param);
 }

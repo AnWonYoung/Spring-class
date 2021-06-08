@@ -16,4 +16,17 @@
         SELECT * FROM t_user
         WHERE uid = #{uid}
     </select>
+
+    <update id="updUser">
+        UPDATE t_user
+        <set>
+            <if test="upw != null and upw != '' ">
+                upw = #{upw}
+            </if>
+            <if test="profileImg != null and profileImg != '' ">
+                , profileImg = #{profileImg}
+            </if>
+        </set>
+        WHERE iuser = #{iuser}
+    </update>
 </mapper>

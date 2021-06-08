@@ -30,7 +30,7 @@ function regAjax(param) {
 		}
 	};
 
-	fetch('cmtIns', init)
+	fetch('cmt', init)
 		.then(function(res) {
 			return res.json();
 		})
@@ -50,10 +50,11 @@ function regAjax(param) {
 }
 // 서버에게 댓글 리스트를 달라고 요청하는 함수
 // 쿼리스트링으로 json을 날리고 있음 = @RequestBody 필요 X
+// 쿼리스트링 수정함! 수정 전 = (cmt?iboard)
 function getListAjax() {
 	var iboard = cmtListElem.dataset.iboard;
 	
-	fetch('cmtSel?iboard=' + iboard)
+	fetch('cmt/' + iboard)
 	.then(function(res) {
 		return res.json();
 	})
@@ -143,14 +144,15 @@ function makeCmtElemList(data) {
 	});
 }
 // 삭제하는 함수
+// 같은 주소값으로 method에 따라서 CRUD로 날아감
 function delAjax(icmt) {
-	fetch('cmtDelUpd?icmt=' + icmt)
+	fetch('cmt/' + icmt, {method: 'DELETE'})
 	.then(function(res) {
 		return res.json();
 	})
-	.then(function(myJson) {
-		console.log(myJson);
-		switch(myJson.result) {
+	.then(function(data) {
+		console.log(data);
+		switch(data.result) {
 			case 0:
 				alert('댓글 삭제 실패');
 			break;
@@ -162,13 +164,13 @@ function delAjax(icmt) {
 }
 
 // 모달창을 열기 위해서 class에 빈칸을 줌
+// {값을 받고싶은 멤버 필드를 기입}
 function openModModal({icmt, cmt}) {
 	var cmtModFrmElem = document.querySelector('#cmtModFrm');
 	cmtModModalElem.className = '';
-	
 
 	cmtModFrmElem.icmt.value = icmt;
-	cmtModFrmElem.cmt.value = cmt;
+	cmtModFrmElem.modCmt.value = cmt;
 }
 // 모달창 닫기 displayNone
 function closeModModal() {
@@ -179,15 +181,19 @@ function modAjax() {
 	var cmtModFrmElem = document.querySelector('#cmtModFrm');
 	var param = {
 		icmt: cmtModFrmElem.icmt.value,
-		cmt: cmtModFrmElem.cmt.value
+		cmt: cmtModFrmElem.modCmt.value
 	}
 	
 	const init = {
-		method: 'POST',
-		body: new URLSearchParams(param)
+		method: 'PUT',
+		body: JSON.stringify(param),
+		headers:{
+			'accept' : 'application/json',
+			'content-type' : 'application/json;charset=UTF-8'
+		}
 	};
 	
-	fetch('cmtDelUpd', init)
+	fetch('cmt', init)
 	.then(function(res) {
 		return res.json();
 	})

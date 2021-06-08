@@ -15,7 +15,17 @@
         from t_board_cmt A
         INNER JOIN t_user B
         ON A.iuser = B.iuser
-        WHERE A.iboard = ${iboard}
+        WHERE A.iboard = #{iboard}
         ORDER BY A.icmt
     </select>
+
+    <update id="updBoardCmt">
+        UPDATE t_board_cmt
+        SET cmt = #{cmt}
+        WHERE icmt = #{icmt} AND iuser = #{iuser}
+    </update>
+
+    <delete id="delBoardCmt">
+        DELETE FROM t_board_cmt WHERE icmt = #{icmt} and iuser = #{iuser}
+    </delete>
 </mapper>

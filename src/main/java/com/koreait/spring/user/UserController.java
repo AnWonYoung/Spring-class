@@ -3,9 +3,11 @@ package com.koreait.spring.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 //servlet으로부터 연결을 받을 수 있음
 @Controller
@@ -45,6 +47,17 @@ public class UserController {   // 상위 /user 주소값을 줬다면 login, jo
         service.join(param);
         System.out.println("uid" + param);
         return "redirect:/user/login";
+    }
+
+    @RequestMapping("/profile")
+    public String profile() {
+        return "user/profile";
+    }
+
+    //@RequestMapping(value="/profile", method=RequestMethod.POST)
+    @PostMapping("/profile")
+    public String profile(MultipartFile profileImg) {
+        return "redirect:" + service.uploadProfile(profileImg);
     }
 
 }

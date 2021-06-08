@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>${requestScope.data.title}</title>
+    <link rel="stylesheet" href="/res/css/common.css">
     <link rel="stylesheet" href="/res/css/boardDetail.css">
 </head>
 <body>
@@ -16,7 +17,7 @@
 
     <c:if test="${not empty sessionScope.loginUser}">
     <div>
-        <form id="cmtFrm" method="post" onsubmit="return false;">
+        <form id="cmtFrm" onsubmit="return false;">
             <input type="text" id="cmt" placeholder="댓글" value="">
             <input type="button" value="댓글달기" onclick="regCmt();">
         </form>
@@ -24,6 +25,17 @@
     </c:if>
 <%--  data-키값${value값}  --%>
     <div id="cmtList" data-login-user-pk="${sessionScope.loginUser.iuser}" data-iboard="${param.iboard}"></div>
+
+    <div id="modal" class="displayNone">
+        <div class="modal_content">
+            <form id="cmtModFrm" action="#">
+                <input type="hidden" id="icmt">
+                <input type="text" id="modCmt">
+            </form>
+            <input type="button" value="댓글 수정" onclick="modAjax();">
+            <input type="button" value="취소" onclick="closeModModal();">
+        </div>
+    </div>
 </body>
 </html>
 <script src="/res/js/boarddetail.js"></script>

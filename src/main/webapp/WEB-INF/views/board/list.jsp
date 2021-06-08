@@ -37,7 +37,7 @@
                     <c:set var="img" value="/res/img/noprofile.jpg"/>
                 </c:when>
                 <c:otherwise>
-                    <c:set var="img" value="/res/img/user/${item.iuser}/${item.profileImg}"/>
+                    <c:set var="img" value="/img/${item.iuser}/${item.profileImg}"/>
                 </c:otherwise>
             </c:choose>
             <td>
