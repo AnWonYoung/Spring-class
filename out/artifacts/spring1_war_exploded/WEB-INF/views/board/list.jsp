@@ -1,13 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>리스트</title>
-    <link rel="stylesheet" href="/res/css/common.css">
-    <link rel="stylesheet" href="/res/css/boardList.css">
-</head>
-<body>
 <h1>리스트</h1>
 <%-- service 세션 아이디 값 사용 --%>
 <div>로그인 아이디 : ${sessionScope.loginUser.uid}</div>
@@ -55,6 +47,3 @@
         </tr>
     </c:forEach>
 </table>
-</body>
-</html>
-<script defer src="/res/js/boardList.js"></script>

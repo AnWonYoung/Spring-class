@@ -1,26 +1,31 @@
 @charset "UTF-8";
-html, body {
+html, body, ul { margin: 0; padding: 0; }
+header ul {
+	list-style-type: none;
 	margin: 0;
 	padding: 0;
+	background-color: #333;
+}
+header ul:after{
+	content:'';
+	display: block;
+	clear:both;
+}
+header ul li {
+	float: left;
+}
+header ul li a {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
 }
 
-header nav {
-	height: 50px;
-	background-color: rgb(207, 179, 223);
+header ul li a:hover:not(.active) {
+	background-color: #111;
 }
 
-header nav ul {
-	display: flex;
-	list-style: none;
-	align-content: center;
-	
-}
+section { padding-left: 40px; padding-right: 40px;}
 
-header nav ul li{
-	margin-left: 100px;
-}
-
-section {padding-left: 40px; padding-right: 40px;}
-
-.colorRed {color: red; }
+.colorRed { color: red; }
 .displayNone { display: none !important; }

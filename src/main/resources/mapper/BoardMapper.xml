@@ -2,7 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.koreait.spring.board.BoardMapper">
-<!--  select는 꼭 resultType 명시  -->
+    <insert id="insBoard">
+        INSERT INTO t_board
+        (title, ctnt, iuser)
+        VALUES
+        (#{title}, #{ctnt}, #{iuser})
+    </insert>
+
+    <!--  select는 꼭 resultType 명시  -->
     <select id="selBoardList" resultType="BoardDomain">
         SELECT A.iboard, A.title, A.iuser, A.regdt
         , B.unm AS writerNm, B.profileImg

@@ -30,6 +30,17 @@ public class BoardController {
         return "board/detail";
     }
 
+    @GetMapping("/writeMod")
+    public void writeMod() {
+
+    }
+
+    @PostMapping("writeMod")
+    public String writeMod(BoardEntity param) {
+        int iboard = service.writeMod(param);
+        return "redirect:detail?iboard=" + iboard;
+    }
+
 //  Json 형태로 문자열을 만드는 map
 //  map은 forEach문 돌릴 수 없음
 //  Json 형태로 js에서 담아서 날리면 RequestBody를 기입
@@ -44,7 +55,6 @@ public class BoardController {
             return data;
         }
 //      쿼리스트링으로 넘어와서 @RequestBody는 적지 않음
-//
         @ResponseBody
         @RequestMapping(value = "/cmt/{iboard}")
         public List<BoardCmtDomain> cmtSel(@PathVariable int iboard) {

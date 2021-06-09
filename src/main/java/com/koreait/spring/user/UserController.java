@@ -3,11 +3,11 @@ package com.koreait.spring.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 //servlet으로부터 연결을 받을 수 있음
 @Controller
@@ -52,6 +52,14 @@ public class UserController {   // 상위 /user 주소값을 줬다면 login, jo
     @RequestMapping("/profile")
     public String profile() {
         return "user/profile";
+    }
+
+    @GetMapping("/logout")            // 로그아웃 했을 때 바로 전 페이지로 이동
+    public String logout(HttpSession hs, HttpServletRequest req) {
+        hs.invalidate();
+        String referer = req.getHeader("Referer");
+        return "redirect:" + referer;
+//        return "redirect:/user/login";
     }
 
     //@RequestMapping(value="/profile", method=RequestMethod.POST)
