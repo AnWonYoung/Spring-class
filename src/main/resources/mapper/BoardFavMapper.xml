@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreait.spring.board.BoardFavMapper">
+    <insert id="insBoardFav">
+        INSERT INTO t_board_fav
+            ( iboard, iuser )
+        VALUES
+            ( #{iboard}, #{iuser} )
+    </insert>
+
+    <select id="selBoardFav" resultType="_int">
+        SELECT count(iboard)
+        FROM t_board_fav
+        WHERE iboard = #{iboard}
+          AND iuser = #{iuser}
+    </select>
+
+    <delete id="delBoardFav">
+        DELETE FROM t_board_fav
+        WHERE iboard = #{iboard}
+          AND iuser = #{iuser}
+    </delete>
+</mapper>

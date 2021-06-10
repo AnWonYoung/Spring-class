@@ -204,4 +204,86 @@ function modAjax() {
 	}) 
 		
 }
+
+// 좋아요 구현
+// ins, del을 따로 나눠서 복잡도가 높아짐
+var favIconElem = document.querySelector('#favIcon');
+// 이벤트 처리
+favIconElem.addEventListener('click', function () {
+	if(favIconElem.classList.contains('fas')) { // fas가 있다면 좋아요 처리 X > O 처리
+		insFavAjax();
+	}else { // O > X 처리
+		delFavAjax();
+	}
+});
+// 좋아요 처리
+function insFavAjax() {
+	const param = {
+		iboard: cmtListElem.dataset.iboard
+	}
+
+	const init = {
+		method : 'POST',
+		board : JSON.stringify(param),
+		headers:{
+			'accept' : 'application/json',
+			'content-type' : 'application/json;charset=UTF-8'
+		}
+	};
+	fetch('fav', init)
+		.then(function (res) {
+			return res.json();
+		})
+		.then(function (myJson) {
+			if(myJson.result === 1) {
+				taggleFav(1);
+			}
+		})
+}
+// 좋아요 취소
+function delFavAjax() {
+	const init = {
+		method: 'DELETE'
+	}
+
+	const iboard = cmtListElem.dataset.iboard;
+
+	fetch('fav?iboard=' + iboard , init)
+		.then(function (res) {
+			return res.json();
+		})
+		.then(function (myJson) {
+			if(myJson.result === 1) {
+				taggleFav(0);
+			}
+		})
+
+}
+
+// 좋아요 여부 값 가져오기 > cotroller GetMapping /fav와 통신
+// 0이 오면 그대로, 1이 넘어오면(좋아요를 누른 것) 색이 바뀌어야 함
+function getFavAjax() {
+	fetch('fav?iboard=' + cmtListElem.dataset.iboard)
+		.then(function (res) {
+			return res.json();
+		})
+		.then(function (myJson) {
+			taggleFav(myJson.result);
+		});
+}
+
+function taggleFav(taggle) {
+	switch (taggle) {
+		case 0: // 기존에 좋아요를 누른 상태였다면 삭제를 해주는 처리
+			favIconElem.classList.remove('fas');
+			favIconElem.classList.add('far'); // 위가 아닐 시 그대로 far인 상태
+			break;
+		case 1: // 좋아요를 눌렀을 때는 위와 반대로 처리
+			favIconElem.classList.remove('far');
+			favIconElem.classList.add('fas');
+			break;
+	}
+}
+
 getListAjax(); // 해당 파일이 import되자마자 함수를 1회 호출하는 것
+getFavAjax(); // 바로 호출

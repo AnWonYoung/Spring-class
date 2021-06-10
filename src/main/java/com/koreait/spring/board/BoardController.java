@@ -29,16 +29,25 @@ public class BoardController {
         System.out.println("iboard" + param.getIboard());
         return "board/detail";
     }
-
+//  글 수정하기
     @GetMapping("/writeMod")
-    public void writeMod() {
-
+    public void writeMod(BoardDTO param, Model model) {
+        System.out.println("param = " + param);
+        if(param.getIboard() > 0) {
+            model.addAttribute("data", service.selBoard(param));
+        }
     }
 
-    @PostMapping("writeMod")
+    @PostMapping("/writeMod")
     public String writeMod(BoardEntity param) {
         int iboard = service.writeMod(param);
         return "redirect:detail?iboard=" + iboard;
+    }
+
+    @GetMapping("/delBoard")
+    public String delBoard(BoardEntity param) {
+        service.delBoard(param);
+        return "redirect:list";
     }
 
 //  Json 형태로 문자열을 만드는 map

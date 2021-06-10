@@ -1,5 +1,6 @@
 package com.koreait.spring.board;
 
+import com.koreait.spring.MyUtils;
 import com.koreait.spring.user.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ public class BoardService {
     private BoardCmtMapper cmtMapper;
     @Autowired
     private HttpSession session;
+    @Autowired
+    private MyUtils myUtils;
 
     public List<BoardDomain> selBoardList() {
      return mapper.selBoardList();
@@ -24,15 +27,25 @@ public class BoardService {
         return mapper.selBoard(param);
     }
 
-    public int writeMod (BoardEntity param) {
-        UserEntity loginUser = (UserEntity) session.getAttribute("loginUser");
-        param.setIuser(loginUser.getIuser());
-        if(param.getIboard() == 0) {
-            // 등록처리
-            return 0;
+    public int writeMod(BoardEntity param) {
+        param.setIuser(myUtils.getLoginUserPk());
+
+        if(param.getIboard() == 0) { //등록
+            mapper.insBoard(param);
+        } else { //수정
+            mapper.updBoard(param);
         }
-        // 수정처리
-        return 0;
+        return param.getIboard();
+    }
+
+    public int delBoard(BoardEntity param) {
+        //댓글 먼저 삭제한다.
+        BoardCmtEntity cmtParam = new BoardCmtEntity();
+        cmtParam.setIboard(param.getIboard());
+        cmtMapper.delBoardCmt(cmtParam);
+
+        param.setIuser(myUtils.getLoginUserPk());
+        return mapper.delBoard(param);
     }
 
     public int insBoardCmt(BoardCmtEntity param) {
