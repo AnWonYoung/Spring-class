@@ -210,7 +210,7 @@ function modAjax() {
 var favIconElem = document.querySelector('#favIcon');
 // 이벤트 처리
 favIconElem.addEventListener('click', function () {
-	if(favIconElem.classList.contains('fas')) { // fas가 있다면 좋아요 처리 X > O 처리
+	if(favIconElem.classList.contains('far')) { // fas가 있다면 좋아요 처리 X > O 처리
 		insFavAjax();
 	}else { // O > X 처리
 		delFavAjax();
@@ -218,13 +218,11 @@ favIconElem.addEventListener('click', function () {
 });
 // 좋아요 처리
 function insFavAjax() {
-	const param = {
-		iboard: cmtListElem.dataset.iboard
-	}
-
+	const param = { iboard : cmtListElem.dataset.iboard };
+	console.log(param);
 	const init = {
 		method : 'POST',
-		board : JSON.stringify(param),
+		body : JSON.stringify(param),
 		headers:{
 			'accept' : 'application/json',
 			'content-type' : 'application/json;charset=UTF-8'
@@ -236,7 +234,7 @@ function insFavAjax() {
 		})
 		.then(function (myJson) {
 			if(myJson.result === 1) {
-				taggleFav(1);
+				toggleFav(1);
 			}
 		})
 }
@@ -245,16 +243,15 @@ function delFavAjax() {
 	const init = {
 		method: 'DELETE'
 	}
-
 	const iboard = cmtListElem.dataset.iboard;
-
+	// 인자값이 두 개면 get 방식은 절대 아님
 	fetch('fav?iboard=' + iboard , init)
 		.then(function (res) {
 			return res.json();
 		})
 		.then(function (myJson) {
 			if(myJson.result === 1) {
-				taggleFav(0);
+				toggleFav(0);
 			}
 		})
 
@@ -263,18 +260,18 @@ function delFavAjax() {
 // 좋아요 여부 값 가져오기 > cotroller GetMapping /fav와 통신
 // 0이 오면 그대로, 1이 넘어오면(좋아요를 누른 것) 색이 바뀌어야 함
 function getFavAjax() {
-	fetch('fav?iboard=' + cmtListElem.dataset.iboard)
+	fetch('fav/' + cmtListElem.dataset.iboard)
 		.then(function (res) {
 			return res.json();
 		})
 		.then(function (myJson) {
-			taggleFav(myJson.result);
+			toggleFav(myJson.result);
 		});
 }
 
-function taggleFav(taggle) {
-	switch (taggle) {
-		case 0: // 기존에 좋아요를 누른 상태였다면 삭제를 해주는 처리
+function toggleFav(toggle) {
+	switch (toggle) {
+		case 0: //좋아요를 누른 상태였다면 삭제하는 처리
 			favIconElem.classList.remove('fas');
 			favIconElem.classList.add('far'); // 위가 아닐 시 그대로 far인 상태
 			break;

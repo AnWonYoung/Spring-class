@@ -2,21 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.koreait.spring.board.BoardMapper">
-    <insert id="insBoard">
+    <insert id="insBoard" useGeneratedKeys="true" keyProperty="iboard">
         INSERT INTO t_board
         (title, ctnt, iuser)
         VALUES
         (#{title}, #{ctnt}, #{iuser})
     </insert>
 
+    <select id="selMaxPageVal" resultType="_int">
+        SELECT CEIL(COUNT(iboard) / #{recordCnt} ) FROM t_board
+    </select>
+
     <!--  select는 꼭 resultType 명시  -->
+    <!--  left join 후 iuser값만 가져와야 내가 좋아요 한 것만 나타남  -->
+    <!--  selType이 0이면 일반 list, 1이면 fav list  -->
+    <!--  마지막 페이징 처리 (시작값, 페이지 값) -->
     <select id="selBoardList" resultType="BoardDomain">
         SELECT A.iboard, A.title, A.iuser, A.regdt
-        , B.unm AS writerNm, B.profileImg
+                , B.unm AS writerNm, B.profileImg
+                , CASE WHEN C.iboard IS NULL THEN 0 ELSE 1 END AS isFav
         FROM t_board A
         INNER JOIN t_user B
         ON A.iuser = B.iuser
+        <if test="selType eq 0">
+            LEFT JOIN t_board_fav C
+        </if>
+        <if test="selType eq 1">
+            INNER JOIN t_board_fav C
+        </if>
+        ON A.iboard = C.iboard
+        AND C.iuser = ${iuser}
         ORDER BY A.iboard DESC
+        <if test="recordCnt > 0">
+            LIMIT #{startIdx}, #{recordCnt}
+        </if>
     </select>
 
     <select id="selBoard" resultType="BoardDomain">

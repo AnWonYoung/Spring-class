@@ -13,3 +13,5 @@ img {
     width: 100px;
     height: 100px;
 }
+
+.selected {font-weight: bold; color: #e7774c3c;}

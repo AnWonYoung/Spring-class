@@ -16,9 +16,10 @@ public class BoardController {
     private BoardService service;
 
     @RequestMapping("/list")
-    public String list(Model model) {
-        List<BoardDomain> list = service.selBoardList();
+    public String list(BoardDTO param, Model model) {
+        List<BoardDomain> list = service.selBoardList(param);
         model.addAttribute("list", list); // list jsp에서 list 키 값 사용 가능
+        model.addAttribute("maxPageVal", service.selMaxPageVal(param));
         return "board/list";
     }
 
@@ -93,5 +94,9 @@ public class BoardController {
             data.put("result", result);
             return data;
         }
+//      위에서는 model을 사용해서 jsp를 뿌렸지만 이번에는 ajax로만 사용
+        @GetMapping("/favList")
+        public void favList() {}
+
     }
 
