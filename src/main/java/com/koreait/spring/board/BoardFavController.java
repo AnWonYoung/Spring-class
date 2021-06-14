@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController // jsp를 뿌리는 용도가 아닐 때는 사용해도 되지만 같이 사용하면 일반 controller
@@ -14,22 +13,36 @@ public class BoardFavController {
 
     @Autowired
     private BoardFavService service;
-
     @Autowired
     private BoardService service2; // favList 처리를 위해 추가
 
     @PostMapping("/fav")
     public Map<String, Integer> insFav(@RequestBody BoardFavEntity param) {
         Map<String, Integer> result = new HashMap<>();
-            result.put("result", service.insFav(param));
-            return result;
+        result.put("result", service.insFav(param));
+        return result;
     }
-//  좋아요 리스트
-    @RequestMapping("/fav")
-    public List<BoardDomain> selFavBoardList(BoardDTO param) {
+
+    //  좋아요 리스트
+    @GetMapping("/fav")
+    public Map<String, Object> selFavBoardList(BoardDTO param) {
+        Map<String, Object> result = new HashMap<>();
+
         param.setSelType(1);
-        return service2.selBoardList(param);
+//     위치 변동 불가능
+        result.put("list", service2.selBoardList(param));
+        result.put("maxPageVal", service2.selMaxPageVal(param));
+
+        return result;
     }
+
+
+//    public List<BoardDomain> selFavBoardList(BoardDTO param) {
+//        param.setSelType(1);
+//        return service2.selBoardList(param);
+//    }
+
+
 
 //  객체만 넣어서 보내주는 처리
 //   getFavAjax에서는 쿼리스트링으로 보내지 않고 주소 키값만 전달하도록 처리

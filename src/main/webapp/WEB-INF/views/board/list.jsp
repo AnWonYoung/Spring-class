@@ -81,7 +81,7 @@
                 <span class="selected">${page}</span>
             </c:when>
             <c:otherwise>
-                <span><a href="list?page=${page}&recordCnt=${param.recordCnt}">${page}</a></span>
+                <span><a href="list?page=${page}&recordCnt=${param.recordCnt == null ? 5 : param.recordCnt}">${page}</a></span>
             </c:otherwise>
         </c:choose>
     </c:forEach>
